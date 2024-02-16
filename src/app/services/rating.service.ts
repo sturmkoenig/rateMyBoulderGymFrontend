@@ -22,7 +22,7 @@ export class RatingService {
     };
   }
 
-  private url = 'http://localhost:5001/rating';
+  private url = 'http://192.168.2.91:5001/rating';
   public allRatings: BehaviorSubject<Rating[]>;
   public userRatings!: Observable<Rating[]>;
 

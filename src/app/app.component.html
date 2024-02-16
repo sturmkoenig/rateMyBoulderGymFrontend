@@ -9,17 +9,21 @@
   >
     <mat-icon>menu</mat-icon>
   </button>
-  <span>Gym Rater</span>
+  <span>Rate my Boulder Gym</span>
   <span class="toolbar__spacer"></span>
 </mat-toolbar>
 
-<mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-    <p>Auto-resizing sidenav</p>
-    <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-    <button (click)="showFiller = !showFiller" mat-raised-button>
-      Toggle extra text
-    </button>
+<mat-drawer-container class="example-container" autosize hasBackdrop="true">
+  <mat-drawer #drawer [mode]="'over'" class="example-sidenav" mode="side">
+    <span class="nav-icons-container">
+      <span class="nav-icons-container__inner" routerLink="/rating"
+        ><mat-icon>thumbs_up_down</mat-icon> Ratings</span
+      >
+      <span class="nav-icons-container__inner" routerLink="/data"
+        ><mat-icon class="nav-icons-container__inner__icon">equalizer</mat-icon>
+        Data</span
+      >
+    </span>
   </mat-drawer>
   <router-outlet></router-outlet>
 </mat-drawer-container>

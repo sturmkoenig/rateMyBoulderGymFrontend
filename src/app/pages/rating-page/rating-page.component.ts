@@ -9,26 +9,16 @@ import {
   map,
   tap,
 } from 'rxjs';
-import { BoulderGym } from 'src/app/model/boulder-gym';
+import { BoulderGym, BoulderGyms } from 'src/app/model/boulder-gym';
 import { Rating } from 'src/app/model/rating';
-import { User } from 'src/app/model/user';
+import { User, Users } from 'src/app/model/user';
 import { RatingService } from 'src/app/services/rating.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-rating-page',
   template: `
     <div class="rating-page-container">
-      <mat-form-field>
-        <mat-label>Who are you?</mat-label>
-        <mat-select
-          [value]="this.selectedUser | async"
-          (selectionChange)="updateSelectedUser($event)"
-        >
-          <mat-option *ngFor="let user of Users" value="{{ user.userName }}">{{
-            user.userName
-          }}</mat-option>
-        </mat-select>
-      </mat-form-field>
       <mat-accordion
         class="rating-page"
         *ngIf="(this.selectedUser | async) !== null"
@@ -74,26 +64,18 @@ import { RatingService } from 'src/app/services/rating.service';
   ],
 })
 export class RatingPageComponent implements OnDestroy {
-  public Users: User[] = [
-    { userName: 'Linus' },
-    { userName: 'Dennis' },
-    { userName: 'Hanna' },
-    { userName: 'Julia' },
-  ];
-
-  public BoulderGyms: BoulderGym[] = [
-    { boulderGymName: 'Berta Block' },
-    { boulderGymName: 'Ost Bloc' },
-    { boulderGymName: 'Family Rocks' },
-    { boulderGymName: 'Boulder Garten' },
-  ];
-
-  selectedUser: BehaviorSubject<string> = new BehaviorSubject('Linus');
+  public BoulderGyms: BoulderGym[] = BoulderGyms;
+  selectedUser: BehaviorSubject<string>;
   panelOpenState = false;
   subscriptionRatings?: Subscription;
   allRatingsByUser?: Observable<Rating[]>;
+  Users = Users;
 
-  constructor(private ratingService: RatingService) {
+  constructor(
+    private ratingService: RatingService,
+    private userService: UserService
+  ) {
+    this.selectedUser = this.userService.currentUser;
     this.allRatingsByUser = combineLatest([
       this.ratingService.allRatings.asObservable(),
       this.selectedUser.asObservable(),
@@ -104,10 +86,6 @@ export class RatingPageComponent implements OnDestroy {
     if (this.subscriptionRatings) {
       this.subscriptionRatings?.unsubscribe();
     }
-  }
-
-  updateSelectedUser($event: MatSelectChange) {
-    this.selectedUser.next($event.value);
   }
 
   isRatedByUser(ratings: Rating[] | null, bouldgerGymName: string): boolean {

@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
+  public currentUser: BehaviorSubject<string> = new BehaviorSubject<string>(
+    'Linus'
+  );
 
-  constructor() { }
+  setCurrentUser(userName: string) {
+    this.currentUser.next(userName);
+  }
 }

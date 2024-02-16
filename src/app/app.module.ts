@@ -20,6 +20,7 @@ import { BarChartComponent } from './components/bar-chart/bar-chart.component';
 import { HttpClientModule } from '@angular/common/http';
 import { RatingPageComponent } from './pages/rating-page/rating-page.component';
 import { DataVisualizationPageComponent } from './pages/data-visualization-page/data-visualization-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { DataVisualizationPageComponent } from './pages/data-visualization-page/
     BarChartComponent,
     RatingPageComponent,
     DataVisualizationPageComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,
