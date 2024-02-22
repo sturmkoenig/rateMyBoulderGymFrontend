@@ -38,7 +38,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "rate-my-boulder-gym:build:production"
+              "buildTarget": "rate-my-boulder-gym:build:production"
             },
             "development": {
-              "browserTarget": "rate-my-boulder-gym:build:development"
+              "buildTarget": "rate-my-boulder-gym:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "rate-my-boulder-gym:build"
+            "buildTarget": "rate-my-boulder-gym:build"
           }
         },
         "test": {

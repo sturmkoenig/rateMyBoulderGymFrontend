@@ -11,6 +11,11 @@
   </button>
   <span>Rate my Boulder Gym</span>
   <span class="toolbar__spacer"></span>
+  @if (!loginName) {
+    <button mat-raised-button (click)="login()">Login</button>
+  } @else {
+    <h3>{{ loginName }}</h3>
+  }
 </mat-toolbar>
 
 <mat-drawer-container class="example-container" autosize hasBackdrop="true">

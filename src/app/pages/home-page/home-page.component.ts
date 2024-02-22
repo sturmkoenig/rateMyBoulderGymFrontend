@@ -7,9 +7,7 @@ import { Users } from 'src/app/model/user';
   selector: 'app-home-page',
   template: `
     <span class="greeting-page">
-      <span class="greeting-page__text">
-        <mat-form-field> </mat-form-field>
-      </span>
+      <span class="greeting-page__text"> </span>
     </span>
   `,
   styles: [

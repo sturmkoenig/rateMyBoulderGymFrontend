@@ -5,31 +5,42 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
+import {
+  EventMessage,
+  EventType,
+  InteractionStatus,
+} from '@azure/msal-browser';
+import { filter } from 'rxjs';
 import { Rating, RatingSlider } from 'src/app/model/rating';
 import { RatingService } from 'src/app/services/rating.service';
 
 @Component({
   selector: 'app-rating',
   template: `
-    <div *ngIf="this.rating" class="slider-container">
-      <div class="slider" *ngFor="let slider of sliders">
-        <span class="slider__label">
-          <mat-icon
-            aria-hidden="false"
-            aria-label="Example home icon"
-            fontIcon="{{ slider.icon }}"
-          ></mat-icon>
-          <span class="slider__label__title">{{ slider.name }}</span>
-        </span>
-        <mat-slider [min]="0" [max]="10" [discrete]="true">
-          <input
-            matSliderThumb
-            [(ngModel)]="rating.ratingCategories[slider.property]"
-            (ngModelChange)="onSubmit()"
-          />
-        </mat-slider>
+    @if (loginDisplay) {
+      <div *ngIf="this.rating" class="slider-container">
+        <div class="slider" *ngFor="let slider of sliders">
+          <span class="slider__label">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              fontIcon="{{ slider.icon }}"
+            ></mat-icon>
+            <span class="slider__label__title">{{ slider.name }}</span>
+          </span>
+          <mat-slider [min]="0" [max]="10" [discrete]="true">
+            <input
+              matSliderThumb
+              [(ngModel)]="rating.ratingCategories[slider.property]"
+              (ngModelChange)="onSubmit()"
+            />
+          </mat-slider>
+        </div>
       </div>
-    </div>
+    } @else {
+      <h4>Please login to view this page</h4>
+    }
   `,
   styles: [
     `
@@ -55,13 +66,43 @@ import { RatingService } from 'src/app/services/rating.service';
     `,
   ],
 })
-export class RatingComponent {
+export class RatingComponent implements OnInit {
   _boulgerGymName?: string;
 
   @Input()
   rating!: Rating;
+  loginDisplay?: boolean;
 
-  public constructor(private ratingService: RatingService) {}
+  public constructor(
+    private authService: MsalService,
+    private msalBroadcastService: MsalBroadcastService,
+    private ratingService: RatingService,
+  ) {}
+  ngOnInit(): void {
+    this.msalBroadcastService.msalSubject$
+      .pipe(
+        filter(
+          (msg: EventMessage) => msg.eventType === EventType.LOGIN_SUCCESS,
+        ),
+      )
+      .subscribe((result: EventMessage) => {
+        console.log(result);
+      });
+
+    this.msalBroadcastService.inProgress$
+      .pipe(
+        filter(
+          (status: InteractionStatus) => status === InteractionStatus.None,
+        ),
+      )
+      .subscribe(() => {
+        this.setLoginDisplay();
+      });
+  }
+
+  setLoginDisplay() {
+    this.loginDisplay = this.authService.instance.getAllAccounts().length > 0;
+  }
 
   public sliders: RatingSlider[] = [
     {

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { RatingPageComponent } from './pages/rating-page/rating-page.component';
 import { DataVisualizationPageComponent } from './pages/data-visualization-page/data-visualization-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
+import { BrowserUtils } from '@azure/msal-browser';
+import { MsalGuard } from '@azure/msal-angular';
 
 const routes: Routes = [
   {
@@ -24,12 +26,14 @@ const routes: Routes = [
     children: [
       {
         path: '',
+        canActivate: [MsalGuard],
         component: DataVisualizationPageComponent,
       },
     ],
   },
   {
     path: 'rating',
+    canActivate: [MsalGuard],
     children: [
       {
         path: '',
