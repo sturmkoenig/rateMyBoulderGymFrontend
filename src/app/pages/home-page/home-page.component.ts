@@ -8,19 +8,7 @@ import { Users } from 'src/app/model/user';
   template: `
     <span class="greeting-page">
       <span class="greeting-page__text">
-        <mat-form-field>
-          <mat-label>Who are you?</mat-label>
-          <mat-select
-            [value]="this.selectedUser | async"
-            (selectionChange)="updateSelectedUser($event)"
-          >
-            <mat-option
-              *ngFor="let user of Users"
-              value="{{ user.userName }}"
-              >{{ user.userName }}</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
+        <mat-form-field> </mat-form-field>
       </span>
     </span>
   `,
@@ -40,7 +28,7 @@ import { Users } from 'src/app/model/user';
   ],
 })
 export class HomePageComponent {
-  selectedUser: BehaviorSubject<string> = new BehaviorSubject('Linus');
+  selectedUser: BehaviorSubject<string> = new BehaviorSubject('Unknown User');
   Users = Users;
 
   updateSelectedUser($event: MatSelectChange) {
